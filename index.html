@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TGP Cups — Site</title>
+  <meta name="description" content="Site oficial de TGP Cups." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.png" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="#" class="brand">
+        <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
+        <span>TGP Cups</span>
+      </a>
+      <nav class="menu" id="menu">
+        <a href="#inicio">Início</a>
+        <a href="#torneios">Torneios</a>
+        <a href="#contato" class="btn btn--sm">Contato</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero container">
+      <div class="hero__text">
+        <h1><span class="grad">TGP Cups</span> </h1>
+        <p>Participe das nossas competições de Torneios e Eventos. Seguro, rápido e com suporte no Discord.</p>
+        <div class="hero__cta">
+          <a href="#torneios" class="btn btn--ghost">Próximos Torneios</a>
+        </div>
+      </div>
+      <div class="hero__media">
+      <img src="https://media.discordapp.net/attachments/1251269110566879272/1405305543072940032/TGP_CUPS_-_Banner.jpg?ex=689e5846&is=689d06c6&hm=9b5c8e898dcf08307046bbdc4f62d5fa32bac212b46c966df3f7329bdeb20afc&=&width=750&height=500" alt="Preview do site" />
+      </div>
+    </section>
+
+    <section id="torneios" class="container section">
+      <h2>Próximos Torneios</h2>
+      <div class="grid tournaments">
+        <article class="card">
+          <div class="card__body">
+            <h3>Simulado 1v1</h3>
+            <p>Inscrições abertas. Vagas limitadas.</p>
+            <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card__body">
+            <h3>Simulado 2v2</h3>
+            <p>Monte sua dupla e venha competir!</p>
+            <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contato" class="container section">
+      <h2>Contato & Suporte</h2>
+      <div class="contact">
+        <a class="btn" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Entrar no Discord</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="ano"></span> TGP Cups. Todos os direitos reservados.</p>
+      <a href="#" class="muted">Política de Privacidade</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
