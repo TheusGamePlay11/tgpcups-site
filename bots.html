@@ -14,7 +14,22 @@
       font-family: sans-serif;
     }
 
-    nav a {
+    /* ===== MENU ===== */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #1e1e1e;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .nav-links a {
       padding: 10px 20px;
       text-decoration: none;
       color: #fff;
@@ -23,15 +38,48 @@
       transition: 0.3s;
     }
 
-    nav a:hover {
+    .nav-links a:hover {
       opacity: 0.85;
       transform: scale(1.05);
     }
 
-    nav a.active {
+    .nav-links a:active {
+      transform: scale(0.98);
+    }
+
+    .nav-links a.active {
       box-shadow: 0 0 10px #667eea;
     }
 
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* ===== CARDS ===== */
     main {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -82,13 +130,21 @@
 <body>
 
   <!-- Menu -->
-  <nav style="display: flex; gap: 15px; align-items: center; padding: 15px; background-color: #1e1e1e;">
-    <a href="index.html">Início</a>
-    <a href="servidores.html">Parceiros</a>
-    <a href="bots.html" class="active">Bots</a>
-    <a href="plataformas.html">Plataformas</a>
-    <a href="index.html#contato">Contato</a>
-  </nav>
+  <header class="header">
+    <div class="nav">
+      <a href="index.html" class="brand">
+        <span>TGP Cups</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+      <nav class="nav-links" id="menu">
+        <a href="index.html">Início</a>
+        <a href="servidores.html">Parceiros</a>
+        <a href="bots.html" class="active">Bots</a>
+        <a href="plataformas.html">Plataformas</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
 
   <header style="padding: 20px;">
     <h1>Bots</h1>
@@ -112,5 +168,10 @@
     </section>
   </main>
 
+  <script>
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("menu").classList.toggle("active");
+    });
+  </script>
 </body>
 </html>
