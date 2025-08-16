@@ -8,6 +8,67 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
+  <style>
+    /* estilos do menu */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    .nav-links a {
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .nav-links a:active {
+      transform: scale(0.98);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -16,18 +77,14 @@
         <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
         <span>TGP Cups</span>
       </a>
-      <nav style="display: flex; gap: 15px; align-items: center; font-family: sans-serif;">
-        <a href="index.html#inicio" style="padding: 10px 20px; text-decoration: none; color: #fff; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 8px; transition: 0.3s;">Início</a>
-        <a href="servidores.html" style="padding: 10px 20px; text-decoration: none; color: #fff; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 8px; transition: 0.3s;">Parceiros</a>
-        <a href="bots.html" style="padding: 10px 20px; text-decoration: none; color: #fff; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 8px; transition: 0.3s;">Bots</a>        
-        <a href="plataformas.html" style="padding: 10px 20px; text-decoration: none; color: #fff; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 8px; transition: 0.3s;">Plataformas</a>
-        <a href="index.html#contato" style="padding: 10px 20px; text-decoration: none; color: #fff; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 8px; transition: 0.3s;">Contato</a>
-      </nav>
-      <style>
-        nav a:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s; }
-        nav a:active { transform: scale(0.98); }
-      </style>
       <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+      <nav class="nav-links" id="menu">
+        <a href="index.html#inicio">Início</a>
+        <a href="servidores.html">Parceiros</a>
+        <a href="bots.html">Bots</a>
+        <a href="plataformas.html">Plataformas</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
     </div>
   </header>
 
@@ -77,6 +134,10 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("menu").classList.toggle("active");
+    });
+  </script>
 </body>
 </html>
