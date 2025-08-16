@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parceiros - TGP Cups</title>
+  <title>Bots - TGP Cups</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
   <style>
@@ -13,6 +13,7 @@
       color: #fff;
       font-family: sans-serif;
     }
+
     nav a {
       padding: 10px 20px;
       text-decoration: none;
@@ -21,31 +22,47 @@
       border-radius: 8px;
       transition: 0.3s;
     }
+
     nav a:hover {
       opacity: 0.85;
       transform: scale(1.05);
     }
+
+    nav a.active {
+      box-shadow: 0 0 10px #667eea;
+    }
+
     main {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       padding: 20px;
     }
+
     .card {
       background: #1e1e1e;
       border-radius: 10px;
       padding: 15px;
       text-align: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
     }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+
     .card img {
       max-width: 100%;
       border-radius: 8px;
       margin-bottom: 10px;
     }
+
     .card h2 {
       margin: 10px 0;
     }
+
     .btn {
       display: inline-block;
       padding: 8px 16px;
@@ -56,6 +73,7 @@
       margin-top: 10px;
       transition: 0.3s;
     }
+
     .btn:hover {
       opacity: 0.85;
     }
@@ -73,23 +91,24 @@
   </nav>
 
   <header style="padding: 20px;">
-    <h1>Parceiros</h1>
-    <p>Confira nossos servidores parceiros oficiais.</p>
+    <h1>Bots</h1>
+    <p>Confira os bots que você pode adicionar ao seu servidor.</p>
   </header>
 
   <main>
+    <!-- Exemplo de Bot -->
     <section class="card">
-      <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="Servidor Parceiro">
-      <h2>TGP CUPS - OFICIAL</h2>
-      <p>Entre no nosso servidor oficial, o melhor de todos!</p>
-      <a href="https://discord.gg/YtKSsKRwNJ" class="btn">Entre Aqui</a>
+      <img src="https://media.discordapp.net/attachments/1398790689096990832/1406063217389605036/Foto_Bot_de_Moderacao.jpg?ex=68a119ea&is=689fc86a&hm=5355fed93abad89c45bba7a21321b5e73214d8424acb238dc0f1e723188c163a&=&width=630&height=630" alt="Bot Exemplo">
+      <h2>Bot de Moderação</h2>
+      <p>Este bot oferece comandos de moderação para seu servidor.</p>
+      <a href="#" class="btn">Adicionar Bot</a>
     </section>
 
     <section class="card">
-      <img src="https://tr.rbxcdn.com/180DAY-a5434f50e5846e446aab631fbf0a92e7/768/432/Image/Webp/noFilter" alt="Servidor Parceiro">
-      <h2>Servidor Parceiro #1</h2>
-      <p>Entre no nosso servidor parceiro, você irá adorar!</p>
-      <a href="https://discord.gg/YtKSsKRwNJ" class="btn">Entre Aqui</a>
+      <img src="https://cdn.discordapp.com/avatars/1399914635712401538/ad7fd041cd509dcc1b3e22bb213f58ba.png?size=1024" alt="Bot Exemplo">
+      <h2>Bot de Jogos</h2>
+      <p>O melhor bot de jogos para seu servidor.</p>
+      <a href="#" class="btn">Adicionar Bot</a>
     </section>
   </main>
 
