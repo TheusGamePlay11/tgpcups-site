@@ -16,7 +16,7 @@ hamburger?.addEventListener('click', () => {
 // Ano dinâmico
 document.getElementById('ano').textContent = new Date().getFullYear();
 
-// Loja mock: você pode trocar pelos seus produtos reais
+// Loja mock
 const produtos = [
   { id: 1, nome: 'Passe Premium', preco: 14.90, img: 'assets/preview_2.png' },
   { id: 2, nome: 'Skin Exclusiva', preco: 9.90, img: 'assets/preview_3.png' },
@@ -58,6 +58,21 @@ function comprar(id){
   const p = produtos.find(x=>x.id===id);
   if(!p) return;
   alert(`Para comprar "${p.nome}", você será redirecionado ao suporte. Envie o comprovante do Pix/QR Code no Discord.`);
-  // Aqui você pode colocar o link do seu Discord:
   // window.open('https://discord.gg/SEU_LINK', '_blank');
 }
+
+// Escuta mudanças no localStorage entre abas
+window.addEventListener("storage", function(event) {
+  if (event.key === "discord_user") {
+    if (event.newValue) {
+      const user = JSON.parse(event.newValue);
+      document.getElementById("discord-login").style.display = "none";
+      const avatar = document.getElementById("user-avatar");
+      avatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+      avatar.style.display = "block";
+    } else {
+      document.getElementById("discord-login").style.display = "block";
+      document.getElementById("user-avatar").style.display = "none";
+    }
+  }
+});
