@@ -160,7 +160,6 @@
     const loginBtn = document.getElementById("discord-login");
     const userAvatar = document.getElementById("user-avatar");
 
-    // Mostrar estado do usuário
     function showUser(user) {
       loginBtn.style.display = "none";
       userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
@@ -168,19 +167,17 @@
 
       userAvatar.onclick = () => {
         if (confirm("Deseja realmente sair?")) {
-          localStorage.removeItem("discord_user");
+          localStorage.removeItem("discord_auth");
           alert("Você saiu da conta.");
           window.location.href = REDIRECT_URI;
         }
       };
     }
 
-    // Iniciar login
     loginBtn.addEventListener("click", () => {
       window.location.href = AUTH_URL;
     });
 
-    // Verificar token no URL
     window.onload = async () => {
       const hash = window.location.hash;
       if (hash.includes("access_token")) {
@@ -196,8 +193,10 @@
 
             if (user.id) {
               alert("✅ Login realizado com sucesso!");
-              localStorage.setItem("discord_user", JSON.stringify(user));
+              localStorage.setItem("discord_auth", JSON.stringify({ user, token }));
               showUser(user);
+              // Limpa o hash da URL
+              window.history.replaceState(null, null, REDIRECT_URI);
             } else {
               alert("❌ Erro ao autenticar.");
             }
@@ -206,10 +205,10 @@
           }
         }
       } else {
-        // Se já tem user salvo, mostrar
-        const savedUser = localStorage.getItem("discord_user");
-        if (savedUser) {
-          showUser(JSON.parse(savedUser));
+        const saved = localStorage.getItem("discord_auth");
+        if (saved) {
+          const { user } = JSON.parse(saved);
+          showUser(user);
         }
       }
     };
