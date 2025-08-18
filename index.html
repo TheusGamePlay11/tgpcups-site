@@ -23,21 +23,24 @@
       font-family: sans-serif;
     }
 
-    .nav-links a {
+    .nav-links a, #discord-login {
       padding: 10px 20px;
       text-decoration: none;
       color: #fff;
       background: linear-gradient(90deg, #667eea, #764ba2);
       border-radius: 8px;
       transition: 0.3s;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover, #discord-login:hover {
       transform: scale(1.05);
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .nav-links a:active {
+    .nav-links a:active, #discord-login:active {
       transform: scale(0.98);
     }
 
@@ -50,27 +53,13 @@
       cursor: pointer;
     }
 
-    /* Botão login */
-    #discord-login {
-      padding: 8px 16px;
-      background: #5865F2;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      font-weight: 600;
-      transition: 0.3s;
-    }
-    #discord-login:hover {
-      transform: scale(1.05);
-    }
-
-    /* Foto perfil */
+    /* Avatar */
     #user-avatar {
       width: 42px;
       height: 42px;
       border-radius: 50%;
       cursor: pointer;
+      display: none;
     }
 
     /* Responsivo */
@@ -106,9 +95,8 @@
         <a href="bots.html">Bots</a>
         <a href="plataformas.html">Plataformas</a>
         <a href="index.html#contato">Contato</a>
-        <!-- BOTÃO LOGIN -->
         <button id="discord-login">Login com Discord</button>
-        <img id="user-avatar" style="display:none;" />
+        <img id="user-avatar" />
       </nav>
     </div>
   </header>
@@ -120,7 +108,34 @@
         <p>Participe das nossas competições de Torneios e Eventos. Seguro, rápido e com suporte no Discord.</p>
       </div>
       <div class="hero__media">
-        <img src="https://media.discordapp.net/attachments/1251269110566879272/1406015477972598784/TGP_CUPS.png" alt="Preview do site" />
+        <img src="https://media.discordapp.net/attachments/1251269110566879272/1406015477972598784/TGP_CUPS.png?width=750&height=500" alt="Preview do site" />
+      </div>
+    </section>
+
+    <section id="torneios" class="container section">
+      <h2>Próximos Torneios</h2>
+      <div class="grid tournaments">
+        <article class="card">
+          <div class="card__body">
+            <h3>Simulado 1v1</h3>
+            <p>Inscrições abertas. Vagas limitadas.</p>
+            <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card__body">
+            <h3>Simulado 2v2</h3>
+            <p>Monte sua dupla e venha competir!</p>
+            <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contato" class="container section">
+      <h2>Contato & Suporte</h2>
+      <div class="contact">
+        <a class="btn" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Entrar no Discord</a>
       </div>
     </section>
   </main>
@@ -145,6 +160,21 @@
     const loginBtn = document.getElementById("discord-login");
     const userAvatar = document.getElementById("user-avatar");
 
+    // Mostrar estado do usuário
+    function showUser(user) {
+      loginBtn.style.display = "none";
+      userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+      userAvatar.style.display = "block";
+
+      userAvatar.onclick = () => {
+        if (confirm("Deseja realmente sair?")) {
+          localStorage.removeItem("discord_user");
+          alert("Você saiu da conta.");
+          window.location.href = REDIRECT_URI;
+        }
+      };
+    }
+
     // Iniciar login
     loginBtn.addEventListener("click", () => {
       window.location.href = AUTH_URL;
@@ -165,26 +195,21 @@
             const user = await res.json();
 
             if (user.id) {
-              // Sucesso
               alert("✅ Login realizado com sucesso!");
-              loginBtn.style.display = "none";
-              userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-              userAvatar.style.display = "block";
-
-              // Clique para logout
-              userAvatar.onclick = () => {
-                if (confirm("Deseja realmente sair?")) {
-                  localStorage.removeItem("discord_user");
-                  alert("Você saiu da conta.");
-                  window.location.href = REDIRECT_URI;
-                }
-              };
+              localStorage.setItem("discord_user", JSON.stringify(user));
+              showUser(user);
             } else {
               alert("❌ Erro ao autenticar.");
             }
           } catch (err) {
             alert("❌ Falha na autenticação.");
           }
+        }
+      } else {
+        // Se já tem user salvo, mostrar
+        const savedUser = localStorage.getItem("discord_user");
+        if (savedUser) {
+          showUser(JSON.parse(savedUser));
         }
       }
     };
