@@ -60,29 +60,6 @@
       cursor: pointer;
     }
 
-    /* Botão de login */
-    #discord-login {
-      padding: 8px 16px;
-      background: linear-gradient(90deg, #5865F2, #4E5D94);
-      border: none;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    #discord-login:hover {
-      opacity: 0.85;
-      transform: scale(1.05);
-    }
-
-    #user-avatar {
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: none;
-      cursor: pointer;
-    }
-
     /* Responsivo */
     @media (max-width: 768px) {
       .nav-links {
@@ -165,10 +142,6 @@
         <a href="bots.html">Bots</a>
         <a href="plataformas.html">Plataformas</a>
         <a href="index.html#contato">Contato</a>
-
-        <!-- Botão de login / Avatar -->
-        <button id="discord-login">Login com Discord</button>
-        <img id="user-avatar" alt="Avatar do Usuário">
       </nav>
     </div>
   </header>
@@ -199,8 +172,5 @@
       document.getElementById("menu").classList.toggle("active");
     });
   </script>
-
-  <!-- Script de autenticação -->
-  <script src="auth.js"></script>
 </body>
 </html>
