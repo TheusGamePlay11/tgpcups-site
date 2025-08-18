@@ -50,31 +50,6 @@
       cursor: pointer;
     }
 
-    /* Login Discord */
-    .login-discord {
-      padding: 10px 20px;
-      background: linear-gradient(90deg, #7289da, #5865f2);
-      color: white;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .login-discord img {
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-    }
-
-    .login-discord:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
     /* Responsivo */
     @media (max-width: 768px) {
       .nav-links {
@@ -104,7 +79,6 @@
         <span>TGP Cups</span>
       </a>
       <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
-
       <nav class="nav-links" id="menu">
         <a href="index.html#inicio">Início</a>
         <a href="servidores.html">Parceiros</a>
@@ -112,14 +86,6 @@
         <a href="plataformas.html">Plataformas</a>
         <a href="index.html#contato">Contato</a>
       </nav>
-
-      <!-- Botão de Login Discord -->
-      <div id="discord-login-container">
-        <div id="discord-login-btn" class="login-discord">
-          Login com Discord
-        </div>
-      </div>
-
     </div>
   </header>
 
@@ -170,40 +136,9 @@
   </footer>
 
   <script>
-    // Menu hamburguer
     document.getElementById("hamburger").addEventListener("click", function () {
       document.getElementById("menu").classList.toggle("active");
     });
-
-    // Simulação Login Discord
-    const loginBtn = document.getElementById("discord-login-btn");
-    const container = document.getElementById("discord-login-container");
-
-    loginBtn.addEventListener("click", async () => {
-      // Aqui você faria a autenticação real com OAuth2 do Discord
-      // Simulação de feedback
-      const sucesso = Math.random() > 0.3; // 70% de chance de sucesso
-      if(sucesso){
-        alert("Login realizado com sucesso!");
-        // Substitui botão pelo avatar do usuário
-        container.innerHTML = `
-          <div class="login-discord" id="user-avatar" title="Clique para sair">
-            <img src="https://cdn.discordapp.com/avatars/USERID/AUTHHASH.png?size=64" alt="Avatar"/>
-            <span>Patrão</span>
-          </div>
-        `;
-        document.getElementById("user-avatar").addEventListener("click", () => {
-          alert("Logout realizado!");
-          location.reload(); // Volta ao estado inicial
-        });
-      } else {
-        alert("Falha ao autenticar. Tente novamente!");
-      }
-    });
-
-    // Atualiza ano no footer
-    document.getElementById("ano").textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
