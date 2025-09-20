@@ -140,38 +140,23 @@
   </footer>
 
   <script>
+    // Menu mobile
     document.getElementById("hamburger").addEventListener("click", function () {
       document.getElementById("menu").classList.toggle("active");
     });
 
-<!-- ---------- Configuração do OAuth ---------- -->
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login com Discord</title>
-</head>
-<body>
-  
-  <button id="discord-login">Login com Discord</button>
-  <br><br>
-  <img id="user-avatar" style="display: none; width: 128px; border-radius: 50%;" />
-  
-  <script>
-    // ---------------- CONFIGURAÇÕES ----------------
+    // ---------- Configuração do OAuth ----------
     const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
 
     // 🔗 URL exata que você pediu
     const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections";
 
-    // Pega os elementos depois que o body foi carregado
     const loginBtn = document.getElementById("discord-login");
     const userAvatar = document.getElementById("user-avatar");
 
     // ---------------- BOTÃO LOGIN ----------------
     loginBtn.addEventListener("click", () => {
-      console.log("Redirecionando para:", AUTH_URL); // debug no console
+      console.log("Redirecionando para:", AUTH_URL);
       window.location.href = AUTH_URL;
     });
 
@@ -212,6 +197,5 @@
       }
     };
   </script>
-  
 </body>
 </html>
