@@ -23,7 +23,7 @@
       font-family: sans-serif;
     }
 
-    .nav-links a, #discord-login {
+    .nav-links a {
       padding: 10px 20px;
       text-decoration: none;
       color: #fff;
@@ -35,12 +35,12 @@
       font-weight: 600;
     }
 
-    .nav-links a:hover, #discord-login:hover {
+    .nav-links a:hover {
       transform: scale(1.05);
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .nav-links a:active, #discord-login:active {
+    .nav-links a:active {
       transform: scale(0.98);
     }
 
@@ -51,15 +51,6 @@
       border: none;
       color: white;
       cursor: pointer;
-    }
-
-    /* Avatar */
-    #user-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
     }
 
     /* Responsivo */
@@ -78,29 +69,6 @@
         display: block;
       }
     }
-
-    /* Caixa estilo "embed" */
-    .embed-box {
-      background: #2f3136;
-      border-left: 6px solid #5865f2;
-      border-radius: 8px;
-      padding: 16px;
-      margin: 20px 0;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .embed-box h2 {
-      margin: 0 0 10px 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .embed-box p {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.5;
-      color: #ddd;
-    }
   </style>
 </head>
 <body>
@@ -118,8 +86,6 @@
       <a href="bots.html">Bots</a>
       <a href="plataformas.html">Plataformas</a>
       <a href="index.html#contato">Contato</a>
-      <button id="discord-login">Login com Discord</button>
-      <img id="user-avatar" />
     </nav>
   </div>
 </header>
@@ -132,14 +98,6 @@
     </div>
     <div class="hero__media">
       <img src="https://i.postimg.cc/q7hwHfNN/TGP-CUPS-Banner.png" />
-    </div>
-  </section>
-
-  <!-- Embed substituindo o "Cancelar" -->
-  <section class="container">
-    <div class="embed-box">
-      <h2>Central de controle do Torneio</h2>
-      <p>Aqui você pode configurar tudo e mais um pouco sobre o sistema de torneio.</p>
     </div>
   </section>
 
@@ -177,50 +135,7 @@
     document.getElementById("menu").classList.toggle("active");
   });
 
-  // ---------- Configuração OAuth ----------
-  const CLIENT_ID = "1419041896080343070";
-  const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
-
-  const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify+guilds.join+guilds+email+connections`;
-
-  const loginBtn = document.getElementById("discord-login");
-  const userAvatar = document.getElementById("user-avatar");
-
-  loginBtn.addEventListener("click", () => {
-    window.open(AUTH_URL, "_blank");
-  });
-
-  function showUser(user) {
-    loginBtn.style.display = "none";
-    userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-    userAvatar.style.display = "block";
-
-    userAvatar.onclick = () => {
-      if (confirm("Deseja realmente sair?")) {
-        localStorage.removeItem("discord_auth");
-        alert("Você saiu da conta.");
-        window.location.href = REDIRECT_URI;
-      }
-    };
-  }
-
-  window.onload = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-
-    if (code) {
-      console.log("Código de autorização recebido:", code);
-      localStorage.setItem("discord_auth_code", code);
-      window.history.replaceState(null, null, REDIRECT_URI);
-    } else {
-      const saved = localStorage.getItem("discord_auth");
-      if (saved) {
-        const { user } = JSON.parse(saved);
-        showUser(user);
-      }
-    }
-  };
-
+  // Atualiza ano no rodapé
   document.getElementById("ano").textContent = new Date().getFullYear();
 </script>
 </body>
