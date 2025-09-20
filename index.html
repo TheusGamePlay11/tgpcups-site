@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
   <style>
-    /* estilos do menu */
+    /* Menu */
     .nav {
       display: flex;
       justify-content: space-between;
@@ -146,21 +146,19 @@
     document.getElementById("menu").classList.toggle("active");
   });
 
-  // ---------- Configuração do OAuth ----------
+  // ---------- Configuração OAuth ----------
+  const CLIENT_ID = "1419041896080343070";
   const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
 
-  // 🔗 URL de OAuth corrigida para adicionar BOT + pegar avatar do usuário
-  const CLIENT_ID = "1419041896080343070";
-  const BOT_PERMISSIONS = "8"; // admin
-  const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&permissions=${BOT_PERMISSIONS}&scope=bot+identify&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  // URL de login do Discord (somente usuário, sem adicionar bot)
+  const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify+guilds.join+guilds+email+connections`;
 
   const loginBtn = document.getElementById("discord-login");
   const userAvatar = document.getElementById("user-avatar");
 
   // ---------------- BOTÃO LOGIN ----------------
   loginBtn.addEventListener("click", () => {
-    console.log("Redirecionando para:", AUTH_URL);
-    window.location.href = AUTH_URL;
+    window.open(AUTH_URL, "_blank"); // abre em nova aba
   });
 
   // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
@@ -181,20 +179,20 @@
   // ---------------- LOGIN AUTOMÁTICO ----------------
   window.onload = async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code"); // código do OAuth
+    const code = urlParams.get("code"); // código OAuth
 
     if (code) {
-      // Aqui você precisaria de um backend para trocar code por access_token
+      // ⚠️ Aqui você precisaria de um backend para trocar o "code" por access_token
       console.log("Código de autorização recebido:", code);
 
-      // Salva no localStorage apenas como exemplo
+      // Exemplo: salvar apenas o code no localStorage
       localStorage.setItem("discord_auth_code", code);
 
-      // Remove o parâmetro da URL
+      // Limpa a URL
       window.history.replaceState(null, null, REDIRECT_URI);
 
-      // ⚠️ Opcional: se tiver backend, aqui você pode buscar user info via API
-      // fetch('/api/exchange_code?code=' + code)...
+      // ⚠️ Com backend, você poderia buscar os dados do usuário real via /users/@me
+      // e então chamar showUser(user)
     } else {
       const saved = localStorage.getItem("discord_auth");
       if (saved) {
