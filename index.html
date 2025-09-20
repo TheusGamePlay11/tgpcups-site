@@ -6,204 +6,146 @@
   <title>TGP Cups — Site</title>
   <meta name="description" content="Site oficial de TGP Cups." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
   <style>
-    /* Menu */
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      font-family: sans-serif;
-    }
-
-    .nav-links a, #discord-login {
-      padding: 10px 20px;
-      text-decoration: none;
-      color: #fff;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 8px;
-      transition: 0.3s;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .nav-links a:hover, #discord-login:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .nav-links a:active, #discord-login:active {
-      transform: scale(0.98);
-    }
-
-    .hamburger {
-      display: none;
-      font-size: 28px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Avatar */
-    #user-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-    }
-
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        margin-top: 10px;
-      }
-      .nav-links.active {
-        display: flex;
-      }
-      .hamburger {
-        display: block;
-      }
-    }
+    /* --- seu CSS (reduzido) --- */
+    body { background:#111; color:#eee; font-family:Inter, sans-serif; margin:0; }
+    .container { max-width:1100px; margin:0 auto; padding:20px; }
+    .nav { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .nav-links { display:flex; gap:12px; align-items:center; }
+    button#discord-login { padding:8px 12px; background:linear-gradient(90deg,#667eea,#764ba2); color:#fff; border:0; border-radius:8px; cursor:pointer; font-weight:600; }
+    img#user-avatar { width:42px; height:42px; border-radius:50%; display:none; cursor:pointer; }
+    .user-info { display:flex; gap:8px; align-items:center; color:#ddd; }
+    .user-name { font-weight:600; font-size:0.95rem; display:none; }
+    /* responsivo */
+    @media (max-width:768px){ .nav-links{flex-wrap:wrap;} }
   </style>
 </head>
 <body>
+<header class="container nav">
+  <a href="index.html" class="brand" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;">
+    <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" style="width:36px;height:36px;border-radius:6px;">
+    <span style="font-weight:700">TGP Cups</span>
+  </a>
 
-<header class="header">
-  <div class="container nav">
-    <a href="index.html" class="brand">
-      <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
-      <span>TGP Cups</span>
-    </a>
-    <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
-    <nav class="nav-links" id="menu">
-      <a href="index.html#inicio">Início</a>
-      <a href="servidores.html">Parceiros</a>
-      <a href="bots.html">Bots</a>
-      <a href="plataformas.html">Plataformas</a>
-      <a href="index.html#contato">Contato</a>
+  <nav class="nav-links">
+    <a href="index.html#inicio" style="color:inherit;text-decoration:none;">Início</a>
+    <a href="servidores.html" style="color:inherit;text-decoration:none;">Parceiros</a>
+    <a href="bots.html" style="color:inherit;text-decoration:none;">Bots</a>
+    <a href="plataformas.html" style="color:inherit;text-decoration:none;">Plataformas</a>
+    <a href="index.html#contato" style="color:inherit;text-decoration:none;">Contato</a>
+
+    <div class="user-info">
       <button id="discord-login">Login com Discord</button>
-      <img id="user-avatar" />
-    </nav>
-  </div>
+      <img id="user-avatar" alt="Avatar do usuário" />
+      <span class="user-name" id="user-name"></span>
+    </div>
+  </nav>
 </header>
 
-<main>
-  <section id="inicio" class="hero container">
-    <div class="hero__text">
-      <h1><span class="grad">TGP Cups</span></h1>
-      <p>Participe das nossas competições de Torneios e Eventos. Seguro, rápido e com suporte no Discord.</p>
-    </div>
-    <div class="hero__media">
-      <img src="https://i.postimg.cc/q7hwHfNN/TGP-CUPS-Banner.png" />
-    </div>
-  </section>
-
-  <section id="torneios" class="container section">
-    <h2>Próximos Torneios</h2>
-    <div class="grid tournaments">
-      <article class="card">
-        <div class="card__body">
-          <h3>Simulado 1v1</h3>
-          <p>Inscrições abertas. Vagas limitadas.</p>
-          <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section id="contato" class="container section">
-    <h2>Contato & Suporte</h2>
-    <div class="contact">
-      <a class="btn" href="https://discord.gg/UvHCvtZCMd" target="_blank" rel="noopener">Entrar no Discord</a>
-    </div>
-  </section>
+<main class="container">
+  <!-- seu conteúdo -->
+  <h1 style="color:#fff">TGP Cups</h1>
+  <p>Participe das nossas competições de Torneios e Eventos.</p>
 </main>
 
-<footer class="footer">
-  <div class="container footer__inner">
-    <p>© <span id="ano"></span> TGP Cups. Todos os direitos reservados.</p>
-    <a href="#" class="muted">Política de Privacidade</a>
-  </div>
+<footer class="container" style="padding:18px 20px;">
+  <p>© <span id="ano"></span> TGP Cups. Todos os direitos reservados.</p>
 </footer>
 
 <script>
-  // Menu mobile
-  document.getElementById("hamburger").addEventListener("click", function () {
-    document.getElementById("menu").classList.toggle("active");
-  });
-
-  // ---------- Configuração OAuth ----------
+  // ---------- CONFIG ----------
   const CLIENT_ID = "1419041896080343070";
   const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
-
-  // URL de login do Discord (somente usuário, sem adicionar bot)
-  const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify+guilds.join+guilds+email+connections`;
+  const BACKEND_URL = "https://seu-backend.example.com"; // <--- troque para o URL do seu backend (HTTPS!)
+  const AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
 
   const loginBtn = document.getElementById("discord-login");
   const userAvatar = document.getElementById("user-avatar");
+  const userNameEl = document.getElementById("user-name");
 
-  // ---------------- BOTÃO LOGIN ----------------
+  // Redireciona para o Discord (melhor do que abrir nova aba)
   loginBtn.addEventListener("click", () => {
-    window.open(AUTH_URL, "_blank"); // abre em nova aba
+    window.location.href = AUTH_URL;
   });
 
-  // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
-  function showUser(user) {
-    loginBtn.style.display = "none";
-    userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-    userAvatar.style.display = "block";
-
-    userAvatar.onclick = () => {
-      if (confirm("Deseja realmente sair?")) {
-        localStorage.removeItem("discord_auth");
-        alert("Você saiu da conta.");
-        window.location.href = REDIRECT_URI;
-      }
-    };
+  // Gera a URL correta do avatar (tratando gif animado e avatar padrão)
+  function getDiscordAvatarUrl(user, size = 128) {
+    if (!user) return '';
+    if (user.avatar) {
+      const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+      return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=${size}`;
+    } else {
+      // se sem avatar, usa o avatar default (discriminator mod 5)
+      const disc = user.discriminator || '0';
+      const idx = parseInt(disc, 10) % 5;
+      return `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
+    }
   }
 
-  // ---------------- LOGIN AUTOMÁTICO ----------------
-  window.onload = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code"); // código OAuth
+  // Exibe o usuário no header
+  function showUser(user) {
+    if (!user) return;
+    loginBtn.style.display = "none";
+    userAvatar.src = getDiscordAvatarUrl(user, 128);
+    userAvatar.style.display = "inline-block";
+    userNameEl.textContent = `${user.username}${user.discriminator ? '#' + user.discriminator : ''}`;
+    userNameEl.style.display = "inline-block";
+
+    // logout simples
+    userAvatar.addEventListener("click", () => {
+      if (confirm("Deseja realmente sair?")) {
+        localStorage.removeItem("discord_auth");
+        userAvatar.style.display = "none";
+        userNameEl.style.display = "none";
+        loginBtn.style.display = "inline-block";
+        // opcional: redireciona
+        window.location.href = REDIRECT_URI;
+      }
+    });
+  }
+
+  // Ao carregar a página: processa "code" (se houver) ou carrega de localStorage
+  window.addEventListener("load", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
 
     if (code) {
-      // ⚠️ Aqui você precisaria de um backend para trocar o "code" por access_token
-      console.log("Código de autorização recebido:", code);
+      try {
+        // Troca o code pelo user via backend seguro
+        const resp = await fetch(`${BACKEND_URL}/auth/discord`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, redirect_uri: REDIRECT_URI })
+        });
 
-      // Exemplo: salvar apenas o code no localStorage
-      localStorage.setItem("discord_auth_code", code);
-
-      // Limpa a URL
-      window.history.replaceState(null, null, REDIRECT_URI);
-
-      // ⚠️ Com backend, você poderia buscar os dados do usuário real via /users/@me
-      // e então chamar showUser(user)
+        const data = await resp.json();
+        if (resp.ok && data.user) {
+          // salva apenas o user (não salva tokens no front)
+          localStorage.setItem("discord_auth", JSON.stringify({ user: data.user }));
+          showUser(data.user);
+          // limpa params da URL
+          window.history.replaceState({}, document.title, REDIRECT_URI);
+        } else {
+          console.error("Erro trocando code:", data);
+        }
+      } catch (err) {
+        console.error("Erro ao trocar code:", err);
+      }
     } else {
       const saved = localStorage.getItem("discord_auth");
       if (saved) {
-        const { user } = JSON.parse(saved);
-        showUser(user);
+        try {
+          const { user } = JSON.parse(saved);
+          showUser(user);
+        } catch (e) {
+          console.error("Erro ao ler discord_auth:", e);
+        }
       }
     }
-  };
 
-  // Atualiza ano no rodapé
-  document.getElementById("ano").textContent = new Date().getFullYear();
+    // atualiza ano
+    document.getElementById("ano").textContent = new Date().getFullYear();
+  });
 </script>
 </body>
 </html>
