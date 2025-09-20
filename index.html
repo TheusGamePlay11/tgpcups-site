@@ -155,18 +155,27 @@
 <body>
   
   <button id="discord-login">Login com Discord</button>
+  <br><br>
   <img id="user-avatar" style="display: none; width: 128px; border-radius: 50%;" />
   
   <script>
-
-    // Configurações OAuth
-    const CLIENT_ID = "1392220569117917304";
+    // ---------------- CONFIGURAÇÕES ----------------
     const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
-    const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
+    // 🔗 URL exata que você pediu
+    const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections";
+
+    // Pega os elementos depois que o body foi carregado
     const loginBtn = document.getElementById("discord-login");
     const userAvatar = document.getElementById("user-avatar");
 
+    // ---------------- BOTÃO LOGIN ----------------
+    loginBtn.addEventListener("click", () => {
+      console.log("Redirecionando para:", AUTH_URL); // debug no console
+      window.location.href = AUTH_URL;
+    });
+
+    // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
     function showUser(user) {
       loginBtn.style.display = "none";
       userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
@@ -181,36 +190,19 @@
       };
     }
 
-    loginBtn.addEventListener("click", () => {
-      window.location.href = AUTH_URL;
-    });
-
+    // ---------------- LOGIN AUTOMÁTICO ----------------
     window.onload = async () => {
-      const hash = window.location.hash;
-      if (hash.includes("access_token")) {
-        const params = new URLSearchParams(hash.replace("#", "?"));
-        const token = params.get("access_token");
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code"); // agora vem "code" em vez de "access_token"
 
-        if (token) {
-          try {
-            const res = await fetch("https://discord.com/api/users/@me", {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            const user = await res.json();
+      if (code) {
+        alert("✅ Código de autorização recebido: " + code);
 
-            if (user.id) {
-              alert("✅ Login realizado com sucesso!");
-              localStorage.setItem("discord_auth", JSON.stringify({ user, token }));
-              showUser(user);
-              // Limpa o hash da URL
-              window.history.replaceState(null, null, REDIRECT_URI);
-            } else {
-              alert("❌ Erro ao autenticar.");
-            }
-          } catch (err) {
-            alert("❌ Falha na autenticação.");
-          }
-        }
+        // Salva o code (exemplo)
+        localStorage.setItem("discord_auth_code", code);
+
+        // Remove o parâmetro da URL
+        window.history.replaceState(null, null, REDIRECT_URI);
       } else {
         const saved = localStorage.getItem("discord_auth");
         if (saved) {
@@ -220,5 +212,6 @@
       }
     };
   </script>
+  
 </body>
 </html>
