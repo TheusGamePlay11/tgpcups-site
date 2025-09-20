@@ -82,120 +82,130 @@
 </head>
 <body>
 
-  <header class="header">
-    <div class="container nav">
-      <a href="index.html" class="brand">
-        <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
-        <span>TGP Cups</span>
-      </a>
-      <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
-      <nav class="nav-links" id="menu">
-        <a href="index.html#inicio">Início</a>
-        <a href="servidores.html">Parceiros</a>
-        <a href="bots.html">Bots</a>
-        <a href="plataformas.html">Plataformas</a>
-        <a href="index.html#contato">Contato</a>
-        <button id="discord-login">Login com Discord</button>
-        <img id="user-avatar" />
-      </nav>
+<header class="header">
+  <div class="container nav">
+    <a href="index.html" class="brand">
+      <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
+      <span>TGP Cups</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+    <nav class="nav-links" id="menu">
+      <a href="index.html#inicio">Início</a>
+      <a href="servidores.html">Parceiros</a>
+      <a href="bots.html">Bots</a>
+      <a href="plataformas.html">Plataformas</a>
+      <a href="index.html#contato">Contato</a>
+      <button id="discord-login">Login com Discord</button>
+      <img id="user-avatar" />
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="inicio" class="hero container">
+    <div class="hero__text">
+      <h1><span class="grad">TGP Cups</span></h1>
+      <p>Participe das nossas competições de Torneios e Eventos. Seguro, rápido e com suporte no Discord.</p>
     </div>
-  </header>
-
-  <main>
-    <section id="inicio" class="hero container">
-      <div class="hero__text">
-        <h1><span class="grad">TGP Cups</span></h1>
-        <p>Participe das nossas competições de Torneios e Eventos. Seguro, rápido e com suporte no Discord.</p>
-      </div>
-      <div class="hero__media">
-        <img src="https://i.postimg.cc/q7hwHfNN/TGP-CUPS-Banner.png" />
-      </div>
-    </section>
-
-    <section id="torneios" class="container section">
-      <h2>Próximos Torneios</h2>
-      <div class="grid tournaments">
-        <article class="card">
-          <div class="card__body">
-            <h3>Simulado 1v1</h3>
-            <p>Inscrições abertas. Vagas limitadas.</p>
-            <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
-          </div>
-        </article>
-    </section>
-
-    <section id="contato" class="container section">
-      <h2>Contato & Suporte</h2>
-      <div class="contact">
-        <a class="btn" href="https://discord.gg/UvHCvtZCMd" target="_blank" rel="noopener">Entrar no Discord</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer__inner">
-      <p>© <span id="ano"></span> TGP Cups. Todos os direitos reservados.</p>
-      <a href="#" class="muted">Política de Privacidade</a>
+    <div class="hero__media">
+      <img src="https://i.postimg.cc/q7hwHfNN/TGP-CUPS-Banner.png" />
     </div>
-  </footer>
+  </section>
 
-  <script>
-    // Menu mobile
-    document.getElementById("hamburger").addEventListener("click", function () {
-      document.getElementById("menu").classList.toggle("active");
-    });
+  <section id="torneios" class="container section">
+    <h2>Próximos Torneios</h2>
+    <div class="grid tournaments">
+      <article class="card">
+        <div class="card__body">
+          <h3>Simulado 1v1</h3>
+          <p>Inscrições abertas. Vagas limitadas.</p>
+          <a class="btn btn--sm" href="https://discord.gg/hfRKBSuZfZ" target="_blank" rel="noopener">Participar</a>
+        </div>
+      </article>
+    </div>
+  </section>
 
-    // ---------- Configuração do OAuth ----------
-    const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
+  <section id="contato" class="container section">
+    <h2>Contato & Suporte</h2>
+    <div class="contact">
+      <a class="btn" href="https://discord.gg/UvHCvtZCMd" target="_blank" rel="noopener">Entrar no Discord</a>
+    </div>
+  </section>
+</main>
 
-    // 🔗 URL exata que você pediu
-    const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections";
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>© <span id="ano"></span> TGP Cups. Todos os direitos reservados.</p>
+    <a href="#" class="muted">Política de Privacidade</a>
+  </div>
+</footer>
 
-    const loginBtn = document.getElementById("discord-login");
-    const userAvatar = document.getElementById("user-avatar");
+<script>
+  // Menu mobile
+  document.getElementById("hamburger").addEventListener("click", function () {
+    document.getElementById("menu").classList.toggle("active");
+  });
 
-    // ---------------- BOTÃO LOGIN ----------------
-    loginBtn.addEventListener("click", () => {
-      console.log("Redirecionando para:", AUTH_URL);
-      window.location.href = AUTH_URL;
-    });
+  // ---------- Configuração do OAuth ----------
+  const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
 
-    // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
-    function showUser(user) {
-      loginBtn.style.display = "none";
-      userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-      userAvatar.style.display = "block";
+  // 🔗 URL de OAuth corrigida para adicionar BOT + pegar avatar do usuário
+  const CLIENT_ID = "1419041896080343070";
+  const BOT_PERMISSIONS = "8"; // admin
+  const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&permissions=${BOT_PERMISSIONS}&scope=bot+identify&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 
-      userAvatar.onclick = () => {
-        if (confirm("Deseja realmente sair?")) {
-          localStorage.removeItem("discord_auth");
-          alert("Você saiu da conta.");
-          window.location.href = REDIRECT_URI;
-        }
-      };
-    }
+  const loginBtn = document.getElementById("discord-login");
+  const userAvatar = document.getElementById("user-avatar");
 
-    // ---------------- LOGIN AUTOMÁTICO ----------------
-    window.onload = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get("code"); // agora vem "code" em vez de "access_token"
+  // ---------------- BOTÃO LOGIN ----------------
+  loginBtn.addEventListener("click", () => {
+    console.log("Redirecionando para:", AUTH_URL);
+    window.location.href = AUTH_URL;
+  });
 
-      if (code) {
-        alert("✅ Código de autorização recebido: " + code);
+  // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
+  function showUser(user) {
+    loginBtn.style.display = "none";
+    userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+    userAvatar.style.display = "block";
 
-        // Salva o code (exemplo)
-        localStorage.setItem("discord_auth_code", code);
-
-        // Remove o parâmetro da URL
-        window.history.replaceState(null, null, REDIRECT_URI);
-      } else {
-        const saved = localStorage.getItem("discord_auth");
-        if (saved) {
-          const { user } = JSON.parse(saved);
-          showUser(user);
-        }
+    userAvatar.onclick = () => {
+      if (confirm("Deseja realmente sair?")) {
+        localStorage.removeItem("discord_auth");
+        alert("Você saiu da conta.");
+        window.location.href = REDIRECT_URI;
       }
     };
-  </script>
+  }
+
+  // ---------------- LOGIN AUTOMÁTICO ----------------
+  window.onload = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code"); // código do OAuth
+
+    if (code) {
+      // Aqui você precisaria de um backend para trocar code por access_token
+      console.log("Código de autorização recebido:", code);
+
+      // Salva no localStorage apenas como exemplo
+      localStorage.setItem("discord_auth_code", code);
+
+      // Remove o parâmetro da URL
+      window.history.replaceState(null, null, REDIRECT_URI);
+
+      // ⚠️ Opcional: se tiver backend, aqui você pode buscar user info via API
+      // fetch('/api/exchange_code?code=' + code)...
+    } else {
+      const saved = localStorage.getItem("discord_auth");
+      if (saved) {
+        const { user } = JSON.parse(saved);
+        showUser(user);
+      }
+    }
+  };
+
+  // Atualiza ano no rodapé
+  document.getElementById("ano").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
