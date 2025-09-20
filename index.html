@@ -144,14 +144,31 @@
       document.getElementById("menu").classList.toggle("active");
     });
 
-    // Configurações OAuth
+// ---------- Configuração do OAuth ----------
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login com Discord</title>
+</head>
+<body>
+  
+  <button id="discord-login">Login com Discord</button>
+  <img id="user-avatar" style="display: none; width: 128px; border-radius: 50%;" />
+  
+  <script>
+    // ---------------- CONFIGURAÇÕES ----------------
     const CLIENT_ID = "1392220569117917304";
     const REDIRECT_URI = "https://theusgameplay11.github.io/tgpcups-site/";
-    const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+
+    // 🔗 Usa o link exato que você passou
+    const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1419041896080343070&response_type=code&redirect_uri=https%3A%2F%2Ftheusgameplay11.github.io%2Ftgpcups-site%2F&scope=identify+guilds.join+guilds+email+connections";
 
     const loginBtn = document.getElementById("discord-login");
     const userAvatar = document.getElementById("user-avatar");
 
+    // ---------------- FUNÇÃO PARA MOSTRAR O USUÁRIO ----------------
     function showUser(user) {
       loginBtn.style.display = "none";
       userAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
@@ -166,35 +183,38 @@
       };
     }
 
+    // ---------------- BOTÃO LOGIN ----------------
     loginBtn.addEventListener("click", () => {
       window.location.href = AUTH_URL;
     });
 
+    // ---------------- LOGIN AUTOMÁTICO ----------------
     window.onload = async () => {
-      const hash = window.location.hash;
-      if (hash.includes("access_token")) {
-        const params = new URLSearchParams(hash.replace("#", "?"));
-        const token = params.get("access_token");
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code"); // agora vem "code" em vez de "access_token"
 
-        if (token) {
-          try {
-            const res = await fetch("https://discord.com/api/users/@me", {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            const user = await res.json();
+      if (code) {
+        try {
+          // ⚠️ Aqui normalmente você precisa de um BACKEND para trocar o "code" pelo "access_token"
+          // via requisição ao endpoint https://discord.com/api/oauth2/token
+          // Exemplo (no servidor, não no front):
+          // POST /api/oauth2/token
+          // client_id, client_secret, grant_type=authorization_code, code, redirect_uri
 
-            if (user.id) {
-              alert("✅ Login realizado com sucesso!");
-              localStorage.setItem("discord_auth", JSON.stringify({ user, token }));
-              showUser(user);
-              // Limpa o hash da URL
-              window.history.replaceState(null, null, REDIRECT_URI);
-            } else {
-              alert("❌ Erro ao autenticar.");
-            }
-          } catch (err) {
-            alert("❌ Falha na autenticação.");
-          }
+          alert("✅ Código de autorização recebido: " + code);
+
+          // Apenas exemplo: salvando o code no localStorage
+          localStorage.setItem("discord_auth_code", code);
+
+          // Se você tivesse backend, aqui chamaria ele e pegaria o user:
+          // const res = await fetch("/api/exchange_code?code=" + code);
+          // const { user } = await res.json();
+          // showUser(user);
+
+          // Remove o parâmetro da URL
+          window.history.replaceState(null, null, REDIRECT_URI);
+        } catch (err) {
+          alert("❌ Falha ao autenticar.");
         }
       } else {
         const saved = localStorage.getItem("discord_auth");
@@ -205,5 +225,6 @@
       }
     };
   </script>
+  
 </body>
 </html>
