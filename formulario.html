@@ -195,21 +195,15 @@
     @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
     /* ====== STEPPER (BOTÕES + / -) PARA IDADE ====== */
-
-    /* wrapper que mantém input + botões lado a lado */
     .number-wrapper {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
-    /* input ocupa o espaço restante */
     .number-wrapper .age-input {
       flex: 1;
-      -moz-appearance: textfield; /* evita aparências estranhas no Firefox */
+      -moz-appearance: textfield;
     }
-
-    /* botões pequenos, touch-friendly */
     .stepper-btn {
       display: inline-flex;
       align-items: center;
@@ -230,20 +224,9 @@
     .stepper-btn:active { transform: scale(0.98); }
     .stepper-btn:focus { outline: 3px solid rgba(102,126,234,0.35); }
 
-    /* em telas grandes, mantemos o input com mesma aparência */
     @media (min-width: 600px) {
       .stepper-btn { min-width: 36px; min-height: 36px; font-size: 16px; }
     }
-
-    /* evita setas nativas muito proeminentes em certos navegadores (opcional) */
-    /* Remover os comentários das linhas abaixo se desejar esconder setas nativas em navegadores que as mostram */
-    /*
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    */
   </style>
 </head>
 <body>
@@ -285,7 +268,6 @@
 
         <div class="form-group">
           <label for="idade">Idade:</label>
-          <!-- wrapper com botões + / - -->
           <div class="number-wrapper" aria-hidden="false">
             <button type="button" class="stepper-btn" id="decreaseAge" aria-label="Diminuir idade">−</button>
             <input
@@ -368,35 +350,25 @@
       const MIN = 1;
       const MAX = 99;
 
-      function clampAge(n) {
-        if (isNaN(n)) return '';
-        if (n < MIN) return MIN;
-        if (n > MAX) return MAX;
-        return n;
-      }
-
       function changeAge(delta) {
         let current = parseInt(ageInput.value, 10);
-        if (isNaN(current)) current = MIN; // se vazio, começa do mínimo
+        if (isNaN(current)) current = MIN;
         let next = current + delta;
         next = Math.max(MIN, Math.min(MAX, next));
         ageInput.value = next;
         ageInput.dispatchEvent(new Event('input', { bubbles: true }));
       }
 
-      decreaseBtn.addEventListener('click', function () { changeAge(-1); });
-      increaseBtn.addEventListener('click', function () { changeAge(1); });
+      decreaseBtn.addEventListener('click', () => changeAge(-1));
+      increaseBtn.addEventListener('click', () => changeAge(1));
 
-      // Garantir somente dígitos no input (melhor experiência no mobile)
-      ageInput.addEventListener('input', function (e) {
-        // remove qualquer caractere não numérico
+      ageInput.addEventListener('input', function () {
         const cleaned = this.value.replace(/[^\d]/g, '');
         if (this.value !== cleaned) this.value = cleaned;
       });
 
-      // Ao sair do campo, garante que esteja dentro dos limites
       ageInput.addEventListener('blur', function () {
-        if (this.value === '') return; // required cuidará do envio
+        if (this.value === '') return;
         let n = parseInt(this.value, 10);
         if (isNaN(n)) {
           this.value = '';
@@ -406,14 +378,10 @@
         if (n > MAX) this.value = MAX;
       });
 
-      // Permitir ajuste via teclas ArrowUp / ArrowDown por acessibilidade
       ageInput.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowUp') { e.preventDefault(); changeAge(1); }
         if (e.key === 'ArrowDown') { e.preventDefault(); changeAge(-1); }
       });
-
-      // Inicializa com valor mínimo (opcional). Se preferir manter vazio, comente a linha abaixo.
-      // ageInput.value = MIN;
     })();
 
     // Envio do formulário
@@ -429,7 +397,6 @@
       const disponibilidade = document.getElementById("disponibilidade").value;
       const pergunta = document.getElementById("pergunta").value.trim();
 
-      // Validações
       if (!nome || !discord || isNaN(idade) || !cargo || !motivo || !disponibilidade || !pergunta) {
         alert("❌ Por favor, preencha todos os campos obrigatórios corretamente.");
         return;
