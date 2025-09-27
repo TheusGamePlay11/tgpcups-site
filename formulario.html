@@ -13,7 +13,7 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      margin: 0;                /* removido padding que causava as "janelas" nas extremidades */
+      margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
       background: #0f172a;
@@ -22,19 +22,17 @@
 
     /* ====== HEADER (GRADIENTE ALCANÇA 100% DA LARGURA) ====== */
     .header {
-      /* Coloca o gradiente no header (ocupa toda a largura da viewport) */
       background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
-      padding: 10px 0; /* padding vertical; o padding horizontal fica na .container */
+      padding: 10px 0;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       position: relative;
       z-index: 1000;
     }
 
-    /* container centralizado para limitar largura do conteúdo do menu */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px; /* padding horizontal que substitui o padding do body */
+      padding: 0 20px;
     }
 
     /* ====== MENU ====== */
@@ -43,7 +41,6 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      /* sem background aqui — o header já tem o gradiente que ocupa 100% */
     }
 
     .nav .brand {
@@ -89,9 +86,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .nav-links a:active {
-      transform: scale(0.98);
-    }
+    .nav-links a:active { transform: scale(0.98); }
 
     .hamburger {
       display: none;
@@ -110,12 +105,8 @@
         width: 100%;
         margin-top: 10px;
       }
-      .nav-links.active {
-        display: flex;
-      }
-      .hamburger {
-        display: block;
-      }
+      .nav-links.active { display: flex; }
+      .hamburger { display: block; }
     }
 
     /* ====== FORM ====== */
@@ -126,7 +117,7 @@
       width: 100%;
       max-width: 650px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-      margin: 60px auto; /* um pouco mais de espaço abaixo do header */
+      margin: 60px auto;
     }
 
     .form-container h1 {
@@ -138,9 +129,7 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+    .form-group { margin-bottom: 18px; }
 
     .form-group label {
       display: block;
@@ -148,6 +137,7 @@
       font-weight: bold;
     }
 
+    /* inputs/textarea/select padrão */
     .form-group input,
     .form-group textarea,
     .form-group select {
@@ -162,12 +152,9 @@
       font-family: inherit;
     }
 
-    .form-group textarea {
-      resize: none;
-      height: 100px;
-    }
+    .form-group textarea { resize: none; height: 100px; }
 
-    .form-container button {
+    .form-container button.submit-btn {
       width: 100%;
       padding: 14px;
       background: #f87171;
@@ -180,9 +167,7 @@
       transition: 0.3s;
     }
 
-    .form-container button:hover {
-      background: #dc2626;
-    }
+    .form-container button.submit-btn:hover { background: #dc2626; }
 
     .toast {
       visibility: hidden;
@@ -206,15 +191,59 @@
       animation: fadein 0.5s, fadeout 0.5s 3s;
     }
 
-    @keyframes fadein {
-      from {bottom: 0; opacity: 0;}
-      to {bottom: 30px; opacity: 1;}
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+    /* ====== STEPPER (BOTÕES + / -) PARA IDADE ====== */
+
+    /* wrapper que mantém input + botões lado a lado */
+    .number-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    @keyframes fadeout {
-      from {bottom: 30px; opacity: 1;}
-      to {bottom: 0; opacity: 0;}
+    /* input ocupa o espaço restante */
+    .number-wrapper .age-input {
+      flex: 1;
+      -moz-appearance: textfield; /* evita aparências estranhas no Firefox */
     }
+
+    /* botões pequenos, touch-friendly */
+    .stepper-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: #fff;
+      transition: transform 0.08s ease;
+      user-select: none;
+    }
+    .stepper-btn:active { transform: scale(0.98); }
+    .stepper-btn:focus { outline: 3px solid rgba(102,126,234,0.35); }
+
+    /* em telas grandes, mantemos o input com mesma aparência */
+    @media (min-width: 600px) {
+      .stepper-btn { min-width: 36px; min-height: 36px; font-size: 16px; }
+    }
+
+    /* evita setas nativas muito proeminentes em certos navegadores (opcional) */
+    /* Remover os comentários das linhas abaixo se desejar esconder setas nativas em navegadores que as mostram */
+    /*
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    */
   </style>
 </head>
 <body>
@@ -243,7 +272,7 @@
   <main>
     <div class="form-container">
       <h1>FORMULÁRIO DE STAFF - TGP CUPS</h1>
-      <form id="staffForm">
+      <form id="staffForm" novalidate>
         <div class="form-group">
           <label for="nome">Nome completo:</label>
           <input type="text" id="nome" name="nome" maxlength="32" required>
@@ -256,7 +285,25 @@
 
         <div class="form-group">
           <label for="idade">Idade:</label>
-          <input type="number" id="idade" name="idade" min="1" max="99" required onkeydown="return false">
+          <!-- wrapper com botões + / - -->
+          <div class="number-wrapper" aria-hidden="false">
+            <button type="button" class="stepper-btn" id="decreaseAge" aria-label="Diminuir idade">−</button>
+            <input
+              type="number"
+              id="idade"
+              name="idade"
+              class="age-input"
+              min="1"
+              max="99"
+              step="1"
+              required
+              inputmode="numeric"
+              pattern="[0-9]*"
+              aria-label="Idade (1 a 99)"
+              placeholder="Ex: 18"
+            />
+            <button type="button" class="stepper-btn" id="increaseAge" aria-label="Aumentar idade">+</button>
+          </div>
         </div>
 
         <div class="form-group">
@@ -300,7 +347,7 @@
           <textarea id="pergunta" name="pergunta" required></textarea>
         </div>
 
-        <button type="submit">Enviar Respostas</button>
+        <button type="submit" class="submit-btn">Enviar Respostas</button>
       </form>
     </div>
   </main>
@@ -313,18 +360,80 @@
       document.getElementById("menu").classList.toggle("active");
     });
 
+    // STEPPER (botões + / -) para o campo idade
+    (function () {
+      const decreaseBtn = document.getElementById('decreaseAge');
+      const increaseBtn = document.getElementById('increaseAge');
+      const ageInput = document.getElementById('idade');
+      const MIN = 1;
+      const MAX = 99;
+
+      function clampAge(n) {
+        if (isNaN(n)) return '';
+        if (n < MIN) return MIN;
+        if (n > MAX) return MAX;
+        return n;
+      }
+
+      function changeAge(delta) {
+        let current = parseInt(ageInput.value, 10);
+        if (isNaN(current)) current = MIN; // se vazio, começa do mínimo
+        let next = current + delta;
+        next = Math.max(MIN, Math.min(MAX, next));
+        ageInput.value = next;
+        ageInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      decreaseBtn.addEventListener('click', function () { changeAge(-1); });
+      increaseBtn.addEventListener('click', function () { changeAge(1); });
+
+      // Garantir somente dígitos no input (melhor experiência no mobile)
+      ageInput.addEventListener('input', function (e) {
+        // remove qualquer caractere não numérico
+        const cleaned = this.value.replace(/[^\d]/g, '');
+        if (this.value !== cleaned) this.value = cleaned;
+      });
+
+      // Ao sair do campo, garante que esteja dentro dos limites
+      ageInput.addEventListener('blur', function () {
+        if (this.value === '') return; // required cuidará do envio
+        let n = parseInt(this.value, 10);
+        if (isNaN(n)) {
+          this.value = '';
+          return;
+        }
+        if (n < MIN) this.value = MIN;
+        if (n > MAX) this.value = MAX;
+      });
+
+      // Permitir ajuste via teclas ArrowUp / ArrowDown por acessibilidade
+      ageInput.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp') { e.preventDefault(); changeAge(1); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); changeAge(-1); }
+      });
+
+      // Inicializa com valor mínimo (opcional). Se preferir manter vazio, comente a linha abaixo.
+      // ageInput.value = MIN;
+    })();
+
     // Envio do formulário
     document.getElementById("staffForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const nome = document.getElementById("nome").value;
-      const discord = document.getElementById("discord").value;
-      let idade = parseInt(document.getElementById("idade").value);
+      const nome = document.getElementById("nome").value.trim();
+      const discord = document.getElementById("discord").value.trim();
+      let idade = parseInt(document.getElementById("idade").value, 10);
       const cargo = document.getElementById("cargo").value;
-      const experiencia = document.getElementById("experiencia").value || "Nenhuma";
-      const motivo = document.getElementById("motivo").value;
+      const experiencia = document.getElementById("experiencia").value.trim() || "Nenhuma";
+      const motivo = document.getElementById("motivo").value.trim();
       const disponibilidade = document.getElementById("disponibilidade").value;
-      const pergunta = document.getElementById("pergunta").value;
+      const pergunta = document.getElementById("pergunta").value.trim();
+
+      // Validações
+      if (!nome || !discord || isNaN(idade) || !cargo || !motivo || !disponibilidade || !pergunta) {
+        alert("❌ Por favor, preencha todos os campos obrigatórios corretamente.");
+        return;
+      }
 
       if (idade > 99) {
         alert("❌ A idade máxima permitida é 99 anos.");
