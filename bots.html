@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bots - TGP Cups</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: #fff;
+      font-family: sans-serif;
+    }
+
+    /* ===== MENU ===== */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #1e1e1e;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+
+    .nav-links a:active {
+      transform: scale(0.98);
+    }
+
+    .nav-links a.active {
+      box-shadow: 0 0 10px #667eea;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* ===== CARDS ===== */
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card h2 {
+      margin: 10px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menu -->
+  <header class="header">
+    <div class="nav">
+      <a href="index.html" class="brand">
+        <span>TGP Cups</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+      <nav class="nav-links" id="menu">
+        <a href="index.html">Início</a>
+        <a href="servidores.html">Parceiros</a>
+        <a href="bots.html" class="active">Bots</a>
+        <a href="plataformas.html">Plataformas</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <header style="padding: 20px;">
+    <h1>Bots</h1>
+    <p>Confira os bots que você pode adicionar ao seu servidor.</p>
+  </header>
+
+  <main>
+    <!-- Exemplo de Bot -->
+    <section class="card">
+      <img src="https://cdn.discordapp.com/avatars/1410028021787787408/053965e8d23184d6362c58892285701e.png?size=1024" alt="Bot Exemplo">
+      <h2>Bot de Torneio</h2>
+      <p>Bot de Torneio excelente, garanto que irá gostar dele!</p>
+      <a href="https://discord.com/oauth2/authorize?client_id=1410028021787787408" class="btn">Adicionar Bot</a>
+      <a href="https://top.gg/bot/1410028021787787408" class="btn">Vote em Mim</a>
+    </section>
+
+    <section class="card">
+      <img src="https://cdn.discordapp.com/avatars/1419041896080343070/d5bbc4a9e2dfda6a9ffed37a9daffbae.png?size=1024" alt="Bot Exemplo">
+      <h2>Bot de Jogos</h2>
+      <p>TGP CUPS, o melhor bot de diversão para sua comunidade!</p>
+      <a href="https://discord.com/oauth2/authorize?client_id=1419041896080343070" class="btn">Adicionar Bot</a>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("menu").classList.toggle("active");
+    });
+  </script>
+</body>
+</html>

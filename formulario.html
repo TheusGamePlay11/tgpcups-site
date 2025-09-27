@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TGP Cups — Formulário</title>
+  <meta name="description" content="Formulário para ser Staff." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" />
+
+  <style>
+    /* ====== RESET / GERAL ====== */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;                /* removido padding que causava as "janelas" nas extremidades */
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+    }
+
+    /* ====== HEADER (GRADIENTE ALCANÇA 100% DA LARGURA) ====== */
+    .header {
+      /* Coloca o gradiente no header (ocupa toda a largura da viewport) */
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+      padding: 10px 0; /* padding vertical; o padding horizontal fica na .container */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1000;
+    }
+
+    /* container centralizado para limitar largura do conteúdo do menu */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px; /* padding horizontal que substitui o padding do body */
+    }
+
+    /* ====== MENU ====== */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      /* sem background aqui — o header já tem o gradiente que ocupa 100% */
+    }
+
+    .nav .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .nav .logo {
+      width: 45px;
+      height: auto;
+      border-radius: 50%;
+      object-fit: cover;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-links a {
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 8px;
+      transition: 0.3s;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .nav-links a:active {
+      transform: scale(0.98);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* ====== FORM ====== */
+    .form-container {
+      background: #1e293b;
+      padding: 25px 35px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 650px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      margin: 60px auto; /* um pouco mais de espaço abaixo do header */
+    }
+
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #f87171;
+      font-size: 28px;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      background: #334155;
+      color: #f1f5f9;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 14px;
+      background: #f87171;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #0f172a;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .form-container button:hover {
+      background: #dc2626;
+    }
+
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #f87171;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 3s;
+    }
+
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== MENU TOPO ===== -->
+  <header class="header">
+    <div class="container">
+      <div class="nav">
+        <a href="index.html" class="brand">
+          <img src="https://cdn.discordapp.com/icons/1229519619442741288/e3ba5b3392773d67c40072c3fb247302.png?size=1024" alt="TGP Cups" class="logo">
+          <span>TGP Cups</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menu">&#9776;</button>
+        <nav class="nav-links" id="menu">
+          <a href="index.html#inicio">Início</a>
+          <a href="servidores.html">Parceiros</a>
+          <a href="bots.html">Bots</a>
+          <a href="plataformas.html">Plataformas</a>
+          <a href="index.html#contato">Contato</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FORMULÁRIO ===== -->
+  <main>
+    <div class="form-container">
+      <h1>FORMULÁRIO DE STAFF - TGP CUPS</h1>
+      <form id="staffForm">
+        <div class="form-group">
+          <label for="nome">Nome completo:</label>
+          <input type="text" id="nome" name="nome" maxlength="32" required>
+        </div>
+
+        <div class="form-group">
+          <label for="discord">Usuário do Discord:</label>
+          <input type="text" id="discord" name="discord" placeholder="Ex: SeuNick#0000" maxlength="32" required>
+        </div>
+
+        <div class="form-group">
+          <label for="idade">Idade:</label>
+          <input type="number" id="idade" name="idade" min="1" max="99" required onkeydown="return false">
+        </div>
+
+        <div class="form-group">
+          <label for="cargo">Cargo desejado:</label>
+          <select id="cargo" name="cargo" required>
+            <option value="">Selecione</option>
+            <option value="Outros Cargos">Outros Cargos</option>
+            <option value="Designer">Designer</option>
+            <option value="Criador de Torneios">Criador de Torneios</option>
+            <option value="Auxiliar">Auxiliar</option>
+            <option value="Suporte">Suporte</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Moderador">Moderador</option>
+            <option value="C.E.O">C.E.O</option>
+            <option value="Administrador">Administrador</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="experiencia">Possui experiência em staff? Se sim, onde?</label>
+          <textarea id="experiencia" name="experiencia"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="motivo">Por que você quer ser staff da TGP CUPS?</label>
+          <textarea id="motivo" name="motivo" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="disponibilidade">Qual sua disponibilidade de tempo?</label>
+          <select id="disponibilidade" name="disponibilidade" required>
+            <option value="1-2 horas/dia">1-2 horas/dia</option>
+            <option value="3-4 horas/dia">3-4 horas/dia</option>
+            <option value="5+ horas/dia">5+ horas/dia</option>
+            <option value="Fins de semana">Somente fins de semana</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pergunta">Situação: Um membro começou a usar palavrões ou xingamentos. Como devemos proceder nesse caso?</label>
+          <textarea id="pergunta" name="pergunta" required></textarea>
+        </div>
+
+        <button type="submit">Enviar Respostas</button>
+      </form>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">✅ Aplicação enviada com sucesso! Nossa equipe analisará em breve.</div>
+
+  <script>
+    // Menu mobile
+    document.getElementById("hamburger").addEventListener("click", function () {
+      document.getElementById("menu").classList.toggle("active");
+    });
+
+    // Envio do formulário
+    document.getElementById("staffForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value;
+      const discord = document.getElementById("discord").value;
+      let idade = parseInt(document.getElementById("idade").value);
+      const cargo = document.getElementById("cargo").value;
+      const experiencia = document.getElementById("experiencia").value || "Nenhuma";
+      const motivo = document.getElementById("motivo").value;
+      const disponibilidade = document.getElementById("disponibilidade").value;
+      const pergunta = document.getElementById("pergunta").value;
+
+      if (idade > 99) {
+        alert("❌ A idade máxima permitida é 99 anos.");
+        return;
+      }
+      if (idade < 1) {
+        alert("❌ A idade mínima permitida é 1 ano.");
+        return;
+      }
+
+      const webhookURL = "https://discord.com/api/webhooks/1421490897660542996/v7IbcXzgTfi-jLbF4XsyfaaiFP8QTYf1AK39BaK1tBnjfVmJVy8-8aNWlCTAwDEFTpFW";
+
+      const data = {
+        username: "Formulário TGP CUPS",
+        embeds: [{
+          title: "📋 NOVA APLICAÇÃO PARA STAFF",
+          color: 16711680,
+          thumbnail: { url: "https://cdn.discordapp.com/embed/avatars/0.png" },
+          fields: [
+            { name: "👤 Nome", value: nome },
+            { name: "🎮 Discord", value: discord },
+            { name: "🎂 Idade", value: idade.toString() },
+            { name: "🎯 Cargo Desejado", value: cargo },
+            { name: "📌 Experiência", value: experiencia },
+            { name: "❓ Motivo", value: motivo },
+            { name: "⏰ Disponibilidade", value: disponibilidade },
+            { name: "⚖️ Situação", value: pergunta }
+          ]
+        }]
+      };
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }).then(() => {
+        const toast = document.getElementById("toast");
+        toast.className = "toast show";
+        setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 4000);
+        document.getElementById("staffForm").reset();
+      }).catch(() => {
+        alert("❌ Erro ao enviar, tente novamente.");
+      });
+    });
+  </script>
+</body>
+</html>
