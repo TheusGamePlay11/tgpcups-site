@@ -305,6 +305,15 @@
         </div>
 
         <div class="form-group">
+          <label for="server">Qual Servidor para ser Staff?:</label>
+          <select id="server" name="server" required>
+            <option value="">Selecione</option>
+            <option value="TGP CUPS || Comunidade 2.0">TGP CUPS || Comunidade 2.0</option>
+            <option value="DevTGPCUPSPro">DevTGPCUPSPro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label for="experiencia">Possui experiência em staff? Se sim, onde?</label>
           <textarea id="experiencia" name="experiencia"></textarea>
         </div>
@@ -392,6 +401,7 @@
       const discord = document.getElementById("discord").value.trim();
       let idade = parseInt(document.getElementById("idade").value, 10);
       const cargo = document.getElementById("cargo").value;
+      const server = document.getElementById("server").value;
       const experiencia = document.getElementById("experiencia").value.trim() || "Nenhuma";
       const motivo = document.getElementById("motivo").value.trim();
       const disponibilidade = document.getElementById("disponibilidade").value;
@@ -424,6 +434,7 @@
             { name: "🎮 Discord", value: discord },
             { name: "🎂 Idade", value: idade.toString() },
             { name: "🎯 Cargo Desejado", value: cargo },
+            { name: "🏰 Servidor", value: server },
             { name: "📌 Experiência", value: experiencia },
             { name: "❓ Motivo", value: motivo },
             { name: "⏰ Disponibilidade", value: disponibilidade },
