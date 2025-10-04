@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TGP Mario Runner</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: monospace;
+    }
+
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      border-bottom: 2px solid black;
+      background: #87ceeb; /* azul céu padrão */
+      transition: background 2s ease; /* suaviza transição entre dia e noite */
+    }
+
+    /* chão verde */
+    #ground {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background: green;
+    }
+
+    /* nuvens */
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50px;
+      opacity: 0.9;
+    }
+
+    #mario {
+      position: absolute;
+      bottom: 40px;
+      left: 200px;
+      width: 75px;
+      transition: transform 0.1s;
+      transform-origin: 50% 100%;
+    }
+
+    .obstacle {
+      position: absolute;
+      bottom: 34px;
+      width: 50px;
+      height: 70px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/9/93/Mario_pipe.png') no-repeat;
+      background-size: contain;
+    }
+
+    /* placar tipo contador arcade */
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 26px;
+      font-weight: bold;
+      color: black;
+      background: #e0e0e0;
+      border: 2px solid black;
+      padding: 5px 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      letter-spacing: 2px;
+      min-width: 140px;
+      text-align: right;
+      z-index: 10;
+    }
+
+    #gameOver {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      font-size: 32px;
+      color: black;
+      display: none;
+    }
+
+    /* castelo e princesa (inicialmente invisíveis) */
+    #castle {
+      position: absolute;
+      bottom: 40px;
+      right: -250px;
+      width: 200px;
+      display: none;
+    }
+
+    #princess {
+      position: absolute;
+      bottom: 26px;
+      right: -180px;
+      width: 120px;
+      display: none;
+    }
+
+    /* logo do jogo */
+    #gameLogo {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px; /* menor */
+      z-index: 20;
+    }
+
+    /* lua no canto superior direito */
+    #moon {
+      position: absolute;
+      top: 5px;
+      right: 20px;
+      width: 80px;
+      display: none; /* aparece apenas à noite */
+      z-index: 15;
+    }
+
+    /* fantasmas */
+    .ghost {
+      position: absolute;
+      top: 70px;
+      width: 70px;
+      opacity: 0.85;
+      display: none; /* só aparecem à noite */
+      animation: floatGhost 4s ease-in-out infinite alternate;
+      z-index: 5;
+    }
+
+    @keyframes floatGhost {
+      from { transform: translateY(0px); }
+      to { transform: translateY(20px); }
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <!-- Mario -->
+    <img id="mario" src="https://i.pinimg.com/originals/f5/75/2c/f5752c7c9f03832209f0bb8b57214281.gif">
+
+    <!-- logo -->
+    <img id="gameLogo" src="https://i.imgur.com/suCpjuB.png">
+
+    <!-- lua -->
+    <img id="moon" src="https://png.pngtree.com/png-clipart/20240829/original/pngtree-smiling-cartoon-star-from-super-mario-bros-png-image_15878300.png">
+
+    <!-- nuvens fixas -->
+    <div class="cloud" style="left: 200px; top: 80px; width:100px; height:60px;"></div>
+    <div class="cloud" style="left: 600px; top: 120px; width:140px; height:80px;"></div>
+    <div class="cloud" style="left: 1000px; top: 60px; width:100px; height:60px;"></div>
+
+    <!-- fantasmas -->
+    <img class="ghost" id="ghost1" src="https://i.pinimg.com/originals/b3/d3/d9/b3d3d98dfbf70b2b94bbccb0a5e45547.png" style="left: 200px;">
+    <img class="ghost" id="ghost2" src="https://i.pinimg.com/originals/b3/d3/d9/b3d3d98dfbf70b2b94bbccb0a5e45547.png" style="left: 800px;">
+
+    <!-- HUD -->
+    <div id="score">00000</div>
+    <div id="gameOver">💀 Game Over! Pressione F5 para jogar novamente!</div>
+
+    <!-- chão -->
+    <div id="ground"></div>
+
+    <!-- vitória -->
+    <img id="castle" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHCYRgp7oIwmS9_fc-rw6I9oNgisnwumHESEk1AMjCZxT7EsUbVVQBqcb4LkHsZZO8UWAGN6HVRR8yOaZIi8iA42yyDHIcEmngRICoGiWSjcbh9N_RzJ5d5LUOhzscK5KJThiG8Q8zHtRA/s200/SMBCastle.PNG">
+    <img id="princess" src="https://cdn.mobygames.com/promos/654134-paper-mario-the-thousand-year-door-render-princess-peach.png">
+  </div>
+
+  <!-- sons -->
+  <audio id="jumpSound" src="https://themushroomkingdom.net/sounds/wav/smb/smb_jump-small.wav" preload="auto"></audio>
+  <audio id="dieSound" src="https://themushroomkingdom.net/sounds/wav/smb/smb_mariodie.wav" preload="auto"></audio>
+  <audio id="winSound" src="https://themushroomkingdom.net/sounds/wav/smb/smb_stage_clear.wav" preload="auto"></audio>
+  <audio id="milestoneSound" src="https://themushroomkingdom.net/sounds/wav/smb/smb_coin.wav" preload="auto"></audio>
+
+  <script>
+    const mario = document.getElementById("mario");
+    const game = document.getElementById("game");
+    const scoreElement = document.getElementById("score");
+    const gameOverText = document.getElementById("gameOver");
+    const castle = document.getElementById("castle");
+    const princess = document.getElementById("princess");
+    const milestoneSound = document.getElementById("milestoneSound");
+    const moon = document.getElementById("moon");
+    const ghosts = [document.getElementById("ghost1"), document.getElementById("ghost2")];
+
+    let isAlive = true;
+    let score = 0;
+
+    // física
+    let velocity = 0;
+    let gravity = 0.7;
+    let jumpForce = 16;
+    let marioBottom = 40;
+    let isCrouching = false;
+
+    let gameSpeed = 6;
+
+    function jump() {
+      if (!isAlive) return;
+      if (marioBottom <= 45) {
+        velocity = jumpForce;
+        document.getElementById("jumpSound").play();
+      }
+    }
+
+    function crouchDown() {
+      if (!isAlive) return;
+      isCrouching = true;
+      mario.style.transform = "scaleY(0.5)";
+    }
+
+    function crouchUp() {
+      if (!isAlive) return;
+      isCrouching = false;
+      mario.style.transform = "scaleY(1)";
+    }
+
+    function createObstacle() {
+      if (!isAlive) return;
+      const obstacle = document.createElement("div");
+      obstacle.classList.add("obstacle");
+      let obstacleLeft = window.innerWidth;
+      obstacle.style.left = obstacleLeft + "px";
+      game.appendChild(obstacle);
+
+      function moveObstacle() {
+        if (!isAlive) {
+          obstacle.remove();
+          return;
+        }
+        obstacleLeft -= gameSpeed;
+        obstacle.style.left = obstacleLeft + "px";
+
+        let marioRect = mario.getBoundingClientRect();
+        let obsRect = obstacle.getBoundingClientRect();
+
+        const horizontalOverlap = marioRect.left < obsRect.right && marioRect.right > obsRect.left;
+        const verticalOverlap = marioRect.top < obsRect.bottom && marioRect.bottom > obsRect.top;
+
+        if (horizontalOverlap && verticalOverlap) {
+          isAlive = false;
+          mario.src = "https://media.tenor.com/lvqYAh-hp_EAAAAj/mario-dead.gif";
+          document.getElementById("dieSound").play();
+          gameOverText.style.display = "block";
+        }
+
+        if (obstacleLeft > -80) {
+          requestAnimationFrame(moveObstacle);
+        } else {
+          obstacle.remove();
+        }
+      }
+      requestAnimationFrame(moveObstacle);
+
+      let delay = 1500 + Math.random() * 1000;
+      setTimeout(createObstacle, delay);
+    }
+
+    // mover fantasmas (ida e volta)
+    function moveGhosts() {
+      ghosts.forEach((ghost, i) => {
+        if (ghost.style.display !== "none") {
+          let left = parseInt(ghost.dataset.left || ghost.style.left || 200);
+          let dir = parseInt(ghost.dataset.dir || (i % 2 === 0 ? 1 : -1));
+          left += dir * 2;
+          if (left <= 0 || left >= window.innerWidth - 100) {
+            dir *= -1;
+          }
+          ghost.style.left = left + "px";
+          ghost.dataset.left = left;
+          ghost.dataset.dir = dir;
+        }
+      });
+      requestAnimationFrame(moveGhosts);
+    }
+
+    function updateGame() {
+      if (!isAlive) return;
+
+      // gravidade
+      velocity -= gravity;
+      marioBottom += velocity;
+      if (marioBottom < 40) {
+        marioBottom = 40;
+        velocity = 0;
+      }
+      mario.style.bottom = marioBottom + "px";
+
+      // pontuação
+      score++;
+      scoreElement.textContent = score.toString().padStart(5, "0");
+
+      // troca de cenário dia/noite
+      if (score < 5000 || score >= 9000) {
+        game.style.background = "#87ceeb"; // dia
+        moon.style.display = "none";
+        ghosts.forEach(g => g.style.display = "none");
+      } else if (score >= 5000 && score < 9000) {
+        game.style.background = "black"; // noite
+        moon.style.display = "block";
+        ghosts.forEach(g => g.style.display = "block");
+      }
+
+      // som a cada 1000 pontos (menos em 10000)
+      if (score % 1000 === 0 && score !== 10000) {
+        try {
+          milestoneSound.currentTime = 0;
+          milestoneSound.play();
+        } catch {}
+      }
+
+      // aumenta velocidade gradualmente
+      if (score % 500 === 0) {
+        gameSpeed += 0.5;
+      }
+
+      // vitória
+      if (score >= 10000) {
+        isAlive = false;
+        document.getElementById("winSound").play();
+        castle.style.display = "block";
+        princess.style.display = "block";
+
+        let castlePos = window.innerWidth;
+        let princessPos = window.innerWidth - 180;
+
+        function moveCastle() {
+          if (castlePos > window.innerWidth - 250) {
+            castlePos -= 4;
+            princessPos -= 4;
+            castle.style.right = (window.innerWidth - castlePos) + "px";
+            princess.style.right = (window.innerWidth - princessPos) + "px";
+            requestAnimationFrame(moveCastle);
+          }
+        }
+        moveCastle();
+
+        gameOverText.innerHTML = "🏆 Você venceu! Mario encontrou a princesa!";
+        gameOverText.style.display = "block";
+        return;
+      }
+
+      requestAnimationFrame(updateGame);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "ArrowUp") jump();
+      if (e.code === "ArrowDown") crouchDown();
+    });
+
+    document.addEventListener("keyup", (e) => {
+      if (e.code === "ArrowDown") crouchUp();
+    });
+
+    // 🎮 Controles Mobile
+    let touchStartY = 0;
+    game.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+      }
+    });
+
+    game.addEventListener("touchend", (e) => {
+      let touchEndY = e.changedTouches[0].clientY;
+      let diffY = touchStartY - touchEndY;
+
+      if (Math.abs(diffY) < 20) {
+        // toque curto = pulo
+        jump();
+      } else if (diffY > 20) {
+        // arrastou pra cima
+        jump();
+      } else if (diffY < -20) {
+        // arrastou pra baixo
+        crouchDown();
+        setTimeout(crouchUp, 500); // segura abaixado só um tempinho
+      }
+    });
+
+    // iniciar jogo
+    createObstacle();
+    updateGame();
+    moveGhosts();
+  </script>
+</body>
+</html>
