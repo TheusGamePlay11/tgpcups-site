@@ -17,11 +17,10 @@
       height: 100vh;
       overflow: hidden;
       border-bottom: 2px solid black;
-      background: #87ceeb; /* azul céu padrão */
-      transition: background 2s ease; /* suaviza transição entre dia e noite */
+      background: #87ceeb;
+      transition: background 2s ease;
     }
 
-    /* chão verde */
     #ground {
       position: absolute;
       bottom: 0;
@@ -30,7 +29,6 @@
       background: green;
     }
 
-    /* nuvens */
     .cloud {
       position: absolute;
       background: white;
@@ -56,7 +54,6 @@
       background-size: contain;
     }
 
-    /* placar tipo contador arcade */
     #score {
       position: absolute;
       top: 10px;
@@ -85,7 +82,6 @@
       display: none;
     }
 
-    /* castelo e princesa (inicialmente invisíveis) */
     #castle {
       position: absolute;
       bottom: 40px;
@@ -102,33 +98,30 @@
       display: none;
     }
 
-    /* logo do jogo */
     #gameLogo {
       position: absolute;
       top: 5px;
       left: 50%;
       transform: translateX(-50%);
-      width: 180px; /* menor */
+      width: 180px;
       z-index: 20;
     }
 
-    /* lua no canto superior direito */
     #moon {
       position: absolute;
       top: 5px;
       right: 20px;
       width: 80px;
-      display: none; /* aparece apenas à noite */
+      display: none;
       z-index: 15;
     }
 
-    /* fantasmas */
     .ghost {
       position: absolute;
       top: 70px;
       width: 70px;
       opacity: 0.85;
-      display: none; /* só aparecem à noite */
+      display: none;
       animation: floatGhost 4s ease-in-out infinite alternate;
       z-index: 5;
     }
@@ -141,32 +134,17 @@
 </head>
 <body>
   <div id="game">
-    <!-- Mario -->
     <img id="mario" src="https://i.pinimg.com/originals/f5/75/2c/f5752c7c9f03832209f0bb8b57214281.gif">
-
-    <!-- logo -->
     <img id="gameLogo" src="https://i.imgur.com/suCpjuB.png">
-
-    <!-- lua -->
     <img id="moon" src="https://png.pngtree.com/png-clipart/20240829/original/pngtree-smiling-cartoon-star-from-super-mario-bros-png-image_15878300.png">
-
-    <!-- nuvens fixas -->
     <div class="cloud" style="left: 200px; top: 80px; width:100px; height:60px;"></div>
     <div class="cloud" style="left: 600px; top: 120px; width:140px; height:80px;"></div>
     <div class="cloud" style="left: 1000px; top: 60px; width:100px; height:60px;"></div>
-
-    <!-- fantasmas -->
     <img class="ghost" id="ghost1" src="https://i.pinimg.com/originals/b3/d3/d9/b3d3d98dfbf70b2b94bbccb0a5e45547.png" style="left: 200px;">
     <img class="ghost" id="ghost2" src="https://i.pinimg.com/originals/b3/d3/d9/b3d3d98dfbf70b2b94bbccb0a5e45547.png" style="left: 800px;">
-
-    <!-- HUD -->
     <div id="score">00000</div>
     <div id="gameOver">💀 Game Over! Pressione F5 para jogar novamente!</div>
-
-    <!-- chão -->
     <div id="ground"></div>
-
-    <!-- vitória -->
     <img id="castle" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHCYRgp7oIwmS9_fc-rw6I9oNgisnwumHESEk1AMjCZxT7EsUbVVQBqcb4LkHsZZO8UWAGN6HVRR8yOaZIi8iA42yyDHIcEmngRICoGiWSjcbh9N_RzJ5d5LUOhzscK5KJThiG8Q8zHtRA/s200/SMBCastle.PNG">
     <img id="princess" src="https://cdn.mobygames.com/promos/654134-paper-mario-the-thousand-year-door-render-princess-peach.png">
   </div>
@@ -188,23 +166,44 @@
     const moon = document.getElementById("moon");
     const ghosts = [document.getElementById("ghost1"), document.getElementById("ghost2")];
 
+    const jumpSound = document.getElementById("jumpSound");
+    const dieSound = document.getElementById("dieSound");
+    const winSound = document.getElementById("winSound");
+
+    // Ajuste de volume
+    [jumpSound, dieSound, winSound, milestoneSound].forEach(s => s.volume = 0.6);
+
     let isAlive = true;
     let score = 0;
-
-    // física
     let velocity = 0;
     let gravity = 0.7;
     let jumpForce = 16;
     let marioBottom = 40;
     let isCrouching = false;
-
     let gameSpeed = 6;
+    let audioEnabled = false;
+
+    // Desbloquear sons ao primeiro clique ou tecla
+    function unlockAudio() {
+      if (!audioEnabled) {
+        [jumpSound, dieSound, winSound, milestoneSound].forEach(sound => {
+          sound.play().then(() => sound.pause()).catch(() => {});
+        });
+        audioEnabled = true;
+        console.log("🎵 Áudio liberado!");
+      }
+    }
+
+    document.addEventListener("keydown", unlockAudio);
+    document.addEventListener("click", unlockAudio);
+    document.addEventListener("touchstart", unlockAudio);
 
     function jump() {
-      if (!isAlive) return;
+      if (!isAlive || !audioEnabled) return;
       if (marioBottom <= 45) {
         velocity = jumpForce;
-        document.getElementById("jumpSound").play();
+        jumpSound.currentTime = 0;
+        jumpSound.play().catch(()=>{});
       }
     }
 
@@ -245,7 +244,8 @@
         if (horizontalOverlap && verticalOverlap) {
           isAlive = false;
           mario.src = "https://media.tenor.com/lvqYAh-hp_EAAAAj/mario-dead.gif";
-          document.getElementById("dieSound").play();
+          dieSound.currentTime = 0;
+          dieSound.play().catch(()=>{});
           gameOverText.style.display = "block";
         }
 
@@ -261,7 +261,6 @@
       setTimeout(createObstacle, delay);
     }
 
-    // mover fantasmas (ida e volta)
     function moveGhosts() {
       ghosts.forEach((ghost, i) => {
         if (ghost.style.display !== "none") {
@@ -282,7 +281,6 @@
     function updateGame() {
       if (!isAlive) return;
 
-      // gravidade
       velocity -= gravity;
       marioBottom += velocity;
       if (marioBottom < 40) {
@@ -291,38 +289,32 @@
       }
       mario.style.bottom = marioBottom + "px";
 
-      // pontuação
       score++;
       scoreElement.textContent = score.toString().padStart(5, "0");
 
-      // troca de cenário dia/noite
       if (score < 5000 || score >= 9000) {
-        game.style.background = "#87ceeb"; // dia
+        game.style.background = "#87ceeb";
         moon.style.display = "none";
         ghosts.forEach(g => g.style.display = "none");
       } else if (score >= 5000 && score < 9000) {
-        game.style.background = "black"; // noite
+        game.style.background = "black";
         moon.style.display = "block";
         ghosts.forEach(g => g.style.display = "block");
       }
 
-      // som a cada 1000 pontos (menos em 10000)
       if (score % 1000 === 0 && score !== 10000) {
-        try {
-          milestoneSound.currentTime = 0;
-          milestoneSound.play();
-        } catch {}
+        milestoneSound.currentTime = 0;
+        milestoneSound.play().catch(()=>{});
       }
 
-      // aumenta velocidade gradualmente
       if (score % 500 === 0) {
         gameSpeed += 0.5;
       }
 
-      // vitória
       if (score >= 10000) {
         isAlive = false;
-        document.getElementById("winSound").play();
+        winSound.currentTime = 0;
+        winSound.play().catch(()=>{});
         castle.style.display = "block";
         princess.style.display = "block";
 
@@ -357,7 +349,6 @@
       if (e.code === "ArrowDown") crouchUp();
     });
 
-    // 🎮 Controles Mobile
     let touchStartY = 0;
     game.addEventListener("touchstart", (e) => {
       if (e.touches.length === 1) {
@@ -370,23 +361,18 @@
       let diffY = touchStartY - touchEndY;
 
       if (Math.abs(diffY) < 20) {
-        // toque curto = pulo
         jump();
       } else if (diffY > 20) {
-        // arrastou pra cima
         jump();
       } else if (diffY < -20) {
-        // arrastou pra baixo
         crouchDown();
-        setTimeout(crouchUp, 500); // segura abaixado só um tempinho
+        setTimeout(crouchUp, 500);
       }
     });
 
-    // iniciar jogo
     createObstacle();
     updateGame();
     moveGhosts();
   </script>
 </body>
-
 </html>
